@@ -45,6 +45,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Quest Behaviors\__LlamaLibrary\LlamaLibrary.csproj">
@@ -60,6 +61,7 @@
     <Compile Include="CompanyChestSettings.Designer.cs">
       <DependentUpon>CompanyChestSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="SavedSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />

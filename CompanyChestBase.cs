@@ -1,18 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using Buddy.Coroutines;
 using ff14bot;
 using ff14bot.AClasses;
 using ff14bot.Behavior;
+using ff14bot.Enums;
+using ff14bot.Managers;
+using ff14bot.Objects;
+using LlamaLibrary.Helpers;
 using LlamaLibrary.Logging;
 using LlamaLibrary.Memory;
+using LlamaLibrary.RemoteWindows;
 using TreeSharp;
 
 namespace CompanyChest
 {
     public class CompanyChest : BotBase
     {
-        private static readonly LLogger Log = new LLogger("CompanyChest", Colors.Teal);
+        internal static readonly LLogger Log = new LLogger("CompanyChest", Colors.Teal);
 
         private Composite _root;
         public override string Name => "CompanyChest";
@@ -56,9 +64,121 @@ namespace CompanyChest
         {
             if (_isDone) return false;
 
+            if (_settings.ShouldDeposit || _settings.ShouldWithdraw)
+            {
+                if (await GetToChest())
+                {
+                    if (_settings.ShouldDeposit)
+                    {
+                        Log.Information("Depositing Items.");
+                        await DepositItems();
+                    }
+
+                    if (_settings.ShouldWithdraw)
+                    {
+                        Log.Information("Withdrawing Items.");
+                        await WithdrawItems();
+                    }
+                }
+            }
+
             _isDone = true;
-            TreeRoot.Stop("Done fiddling with FC chest.");
+            TreeRoot.Stop("Done interacting with FC chest.");
             return false;
+        }
+
+        private static async Task<bool> GetToChest()
+        {
+            GameObject chest = GameObjectManager.GameObjects.FirstOrDefault(x => x.EnglishName == "Company Chest" && x.Distance(Core.Me) < 3.5f);
+            if (chest == null)
+            {
+                Log.Error("Couldn't find a nearby company chest within interact range! Get a bit closer...");
+                _isDone = true;
+                TreeRoot.Stop("Couldn't find an FC Chest within interact range.");
+                return false;
+            }
+            
+            chest.Interact();
+            await Coroutine.Wait(5000, () => FreeCompanyChest.Instance.IsOpen);
+            if (!FreeCompanyChest.Instance.IsOpen)
+            {
+                Log.Error("Couldn't get the FreeCompanyChest window open.");
+                return false;
+            }
+
+            return true;
+        }
+
+        private static IEnumerable<BagSlot> ChestSlots => InventoryManager
+            .GetBagsByInventoryBagId(InventoryBagId.GrandCompany_Page1, InventoryBagId.GrandCompany_Page2, InventoryBagId.GrandCompany_Page3)
+            .SelectMany(b => b.Select(x => x));
+
+        private static async Task DepositItems()
+        {
+            foreach (uint itemId in SavedSettings.Instance.DepositList.Select(x => x.ItemId).Distinct())
+            {
+                foreach (BagSlot playerSlot in InventoryManager.FilledSlots.Where(x => x.TrueItemId == itemId))
+                {
+                    while (playerSlot.IsValid && playerSlot.IsFilled && playerSlot.TrueItemId == itemId && playerSlot.Count > 0)
+                    {
+                        BagSlot chestSlot = GetChestDestinationSlot(itemId);
+                        if (chestSlot == null)
+                        {
+                            _isDone = true;
+                            TreeRoot.Stop($"Couldn't find a destination slot for {itemId}. Is the FC chest full?");
+                            return;
+                        }
+
+                        playerSlot.Move(chestSlot);
+                        await Coroutine.Sleep(700);
+                    }
+                }
+            }
+        }
+        
+        private static async Task WithdrawItems()
+        {
+            foreach (uint itemId in SavedSettings.Instance.WithdrawList.Select(x => x.ItemId).Distinct())
+            {
+                foreach (BagSlot chestSlot in ChestSlots.Where(x => x.TrueItemId == itemId))
+                {
+                    while (chestSlot.IsValid && chestSlot.IsFilled && chestSlot.TrueItemId == itemId && chestSlot.Count > 0)
+                    {
+                        BagSlot playerSlot = GetPlayerDestinationSlot(itemId);
+                        if (playerSlot == null)
+                        {
+                            _isDone = true;
+                            TreeRoot.Stop($"Couldn't find a destination slot for {itemId}. Is the player inventory full?");
+                            return;
+                        }
+
+                        chestSlot.Move(playerSlot);
+                        await Coroutine.Sleep(700);
+                    }
+                }
+            }
+        }
+
+        private static BagSlot GetChestDestinationSlot(uint trueItemId)
+        {
+            foreach (BagSlot slot in ChestSlots)
+            {
+                if (!slot.IsValid) continue;
+                if (slot.IsFilled && slot.TrueItemId == trueItemId && slot.Count < slot.Item.StackSize) return slot;
+            }
+
+            return ChestSlots.FirstOrDefault(x => x.IsValid && !x.IsFilled);
+        }
+        
+        private static BagSlot GetPlayerDestinationSlot(uint trueItemId)
+        {
+            foreach (BagSlot slot in InventoryManager.FilledSlots)
+            {
+                if (!slot.IsValid) continue;
+                if (slot.IsFilled && slot.TrueItemId == trueItemId && slot.Count < slot.Item.StackSize) return slot;
+            }
+
+            return InventoryManager.GetBagsByInventoryBagId(GeneralFunctions.MainBags).SelectMany(b => b.Select(x => x)).FirstOrDefault(x => x.IsValid && !x.IsFilled);
         }
 
         public override void Stop()
