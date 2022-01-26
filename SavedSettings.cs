@@ -48,7 +48,7 @@ namespace CompanyChest
         }
     }
 
-    public class ChestRule
+    public class ChestRule : IEquatable<ChestRule>
     {
         public uint ItemId { get; set; }
 
@@ -87,5 +87,23 @@ namespace CompanyChest
         {
             ItemId = itemId;
         }
+
+        public bool Equals(ChestRule other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return ItemId == other.ItemId;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((ChestRule)obj);
+        }
+
+        // ReSharper disable once NonReadonlyMemberInGetHashCode
+        public override int GetHashCode() => (int)ItemId;
     }
 }
