@@ -114,12 +114,12 @@ namespace CompanyChest
         {
             IReadOnlyList<ChestRule> toDeleteList = null;
             BindingList<ChestRule> ruleList = null;
-            if (sender == dgDeposit)
+            if (sender == btnDepositDelete)
             {
                 toDeleteList = GetSelectedRows(dgDeposit).Select(x => x.DataBoundItem as ChestRule).ToList();
                 ruleList = SavedSettings.Instance.DepositList;
             }
-            else if (sender == dgWithdraw)
+            else if (sender == btnWithdrawDelete)
             {
                 toDeleteList = GetSelectedRows(dgWithdraw).Select(x => x.DataBoundItem as ChestRule).ToList();
                 ruleList = SavedSettings.Instance.WithdrawList;
