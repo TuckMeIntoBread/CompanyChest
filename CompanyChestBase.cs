@@ -131,7 +131,7 @@ namespace CompanyChest
                         }
 
                         playerSlot.Move(chestSlot);
-                        await Coroutine.Sleep(700);
+                        await Coroutine.Sleep(1500);
                     }
                 }
             }
@@ -155,7 +155,7 @@ namespace CompanyChest
                         }
 
                         chestSlot.Move(playerSlot);
-                        await Coroutine.Sleep(700);
+                        await Coroutine.Sleep(1500);
                     }
                 }
             }
