@@ -25,7 +25,7 @@ namespace CompanyChest
 
         public BindingList<ChestRule> WithdrawList
         {
-            get => _withdrawList ?? new BindingList<ChestRule>();
+            get => _withdrawList ?? (_withdrawList = new BindingList<ChestRule>());
             set
             {
                 if (_withdrawList == value) return;
@@ -37,7 +37,7 @@ namespace CompanyChest
         
         public BindingList<ChestRule> DepositList
         {
-            get => _depositList ?? new BindingList<ChestRule>();
+            get => _depositList ?? (_depositList = new BindingList<ChestRule>());
             set
             {
                 if (_depositList == value) return;
