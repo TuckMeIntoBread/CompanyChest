@@ -117,8 +117,9 @@ namespace CompanyChest
         {
             foreach (ChestRule rule in SavedSettings.Instance.DepositList.Distinct())
             {
-                foreach (BagSlot playerSlot in InventoryManager.FilledSlots.Where(x => x.TrueItemId == rule.ItemId))
+                foreach (BagSlot playerSlot in InventoryManager.FilledSlots.Where(x => x.TrueItemId == rule.ItemId && x.ValidForChest()))
                 {
+                    Log.Information($"Moving Slot#{playerSlot.Slot} {playerSlot.Name} to FC Chest.");
                     while (playerSlot.IsValid && playerSlot.IsFilled && playerSlot.TrueItemId == rule.ItemId && playerSlot.Count > 0)
                     {
                         BagSlot chestSlot = GetChestDestinationSlot(rule.ItemId);
@@ -142,6 +143,7 @@ namespace CompanyChest
             {
                 foreach (BagSlot chestSlot in ChestSlots.Where(x => x.TrueItemId == rule.ItemId))
                 {
+                    Log.Information($"Moving Slot#{chestSlot.Slot} {chestSlot.Name} to Player Inventory.");
                     while (chestSlot.IsValid && chestSlot.IsFilled && chestSlot.TrueItemId == rule.ItemId && chestSlot.Count > 0)
                     {
                         BagSlot playerSlot = GetPlayerDestinationSlot(rule.ItemId);

@@ -61,6 +61,7 @@
     <Compile Include="CompanyChestSettings.Designer.cs">
       <DependentUpon>CompanyChestSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Extensions.cs" />
     <Compile Include="SavedSettings.cs" />
   </ItemGroup>
   <ItemGroup>

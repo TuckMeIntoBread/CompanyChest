@@ -70,7 +70,7 @@ namespace CompanyChest
                 SavedSettings.Instance.Save();
             }
         }
-        
+
         private static void HotkeyWithdrawRule(Hotkey obj)
         {
             if (HoveredItemRule(out ChestRule rule))
