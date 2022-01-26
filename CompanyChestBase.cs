@@ -115,17 +115,17 @@ namespace CompanyChest
 
         private static async Task DepositItems()
         {
-            foreach (uint itemId in SavedSettings.Instance.DepositList.Select(x => x.ItemId).Distinct())
+            foreach (ChestRule rule in SavedSettings.Instance.DepositList.Distinct())
             {
-                foreach (BagSlot playerSlot in InventoryManager.FilledSlots.Where(x => x.TrueItemId == itemId))
+                foreach (BagSlot playerSlot in InventoryManager.FilledSlots.Where(x => x.TrueItemId == rule.ItemId))
                 {
-                    while (playerSlot.IsValid && playerSlot.IsFilled && playerSlot.TrueItemId == itemId && playerSlot.Count > 0)
+                    while (playerSlot.IsValid && playerSlot.IsFilled && playerSlot.TrueItemId == rule.ItemId && playerSlot.Count > 0)
                     {
-                        BagSlot chestSlot = GetChestDestinationSlot(itemId);
+                        BagSlot chestSlot = GetChestDestinationSlot(rule.ItemId);
                         if (chestSlot == null)
                         {
                             _isDone = true;
-                            TreeRoot.Stop($"Couldn't find a destination slot for {itemId}. Is the FC chest full?");
+                            TreeRoot.Stop($"Couldn't find a destination slot for {rule.ItemId}. Is the FC chest full?");
                             return;
                         }
 
@@ -138,17 +138,17 @@ namespace CompanyChest
         
         private static async Task WithdrawItems()
         {
-            foreach (uint itemId in SavedSettings.Instance.WithdrawList.Select(x => x.ItemId).Distinct())
+            foreach (ChestRule rule in SavedSettings.Instance.WithdrawList.Distinct())
             {
-                foreach (BagSlot chestSlot in ChestSlots.Where(x => x.TrueItemId == itemId))
+                foreach (BagSlot chestSlot in ChestSlots.Where(x => x.TrueItemId == rule.ItemId))
                 {
-                    while (chestSlot.IsValid && chestSlot.IsFilled && chestSlot.TrueItemId == itemId && chestSlot.Count > 0)
+                    while (chestSlot.IsValid && chestSlot.IsFilled && chestSlot.TrueItemId == rule.ItemId && chestSlot.Count > 0)
                     {
-                        BagSlot playerSlot = GetPlayerDestinationSlot(itemId);
+                        BagSlot playerSlot = GetPlayerDestinationSlot(rule.ItemId);
                         if (playerSlot == null)
                         {
                             _isDone = true;
-                            TreeRoot.Stop($"Couldn't find a destination slot for {itemId}. Is the player inventory full?");
+                            TreeRoot.Stop($"Couldn't find a destination slot for {rule.ItemId}. Is the player inventory full?");
                             return;
                         }
 
