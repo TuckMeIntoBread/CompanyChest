@@ -32,8 +32,6 @@ namespace CompanyChest
         private void InitializeComponent()
         {
             this.dgDeposit = new System.Windows.Forms.DataGridView();
-            this.ItemId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ItemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.labelDeposit = new System.Windows.Forms.Label();
             this.labelWithdraw = new System.Windows.Forms.Label();
             this.btnDepositAdd = new System.Windows.Forms.Button();
@@ -41,10 +39,12 @@ namespace CompanyChest
             this.btnWithdrawDelete = new System.Windows.Forms.Button();
             this.btnWithdrawAdd = new System.Windows.Forms.Button();
             this.dgWithdraw = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.depositEnabled = new System.Windows.Forms.CheckBox();
             this.withdrawEnabled = new System.Windows.Forms.CheckBox();
+            this.dgWithdrawIdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgWithdrawNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgDepositIdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgDepositNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgDeposit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgWithdraw)).BeginInit();
             this.SuspendLayout();
@@ -55,33 +55,12 @@ namespace CompanyChest
             this.dgDeposit.AllowUserToDeleteRows = false;
             this.dgDeposit.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgDeposit.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ItemId,
-            this.ItemName});
+            this.dgDepositIdColumn,
+            this.dgDepositNameColumn});
             this.dgDeposit.Location = new System.Drawing.Point(12, 31);
             this.dgDeposit.Name = "dgDeposit";
             this.dgDeposit.Size = new System.Drawing.Size(305, 428);
             this.dgDeposit.TabIndex = 0;
-            // 
-            // ItemId
-            // 
-            this.ItemId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.ItemId.DataPropertyName = "ItemId";
-            this.ItemId.FillWeight = 500F;
-            this.ItemId.HeaderText = "ID";
-            this.ItemId.MinimumWidth = 100;
-            this.ItemId.Name = "ItemId";
-            this.ItemId.ReadOnly = true;
-            // 
-            // ItemName
-            // 
-            this.ItemName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.ItemName.DataPropertyName = "ItemName";
-            this.ItemName.FillWeight = 250F;
-            this.ItemName.HeaderText = "Name";
-            this.ItemName.MinimumWidth = 150;
-            this.ItemName.Name = "ItemName";
-            this.ItemName.ReadOnly = true;
-            this.ItemName.Width = 150;
             // 
             // labelDeposit
             // 
@@ -147,33 +126,12 @@ namespace CompanyChest
             this.dgWithdraw.AllowUserToDeleteRows = false;
             this.dgWithdraw.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgWithdraw.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn1,
-            this.dataGridViewTextBoxColumn2});
+            this.dgWithdrawIdColumn,
+            this.dgWithdrawNameColumn});
             this.dgWithdraw.Location = new System.Drawing.Point(355, 31);
             this.dgWithdraw.Name = "dgWithdraw";
             this.dgWithdraw.Size = new System.Drawing.Size(305, 428);
             this.dgWithdraw.TabIndex = 8;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "ItemId";
-            this.dataGridViewTextBoxColumn1.FillWeight = 500F;
-            this.dataGridViewTextBoxColumn1.HeaderText = "ID";
-            this.dataGridViewTextBoxColumn1.MinimumWidth = 100;
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewTextBoxColumn2.DataPropertyName = "ItemName";
-            this.dataGridViewTextBoxColumn2.FillWeight = 250F;
-            this.dataGridViewTextBoxColumn2.HeaderText = "Name";
-            this.dataGridViewTextBoxColumn2.MinimumWidth = 150;
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            this.dataGridViewTextBoxColumn2.Width = 150;
             // 
             // depositEnabled
             // 
@@ -198,6 +156,48 @@ namespace CompanyChest
             this.withdrawEnabled.TabIndex = 10;
             this.withdrawEnabled.Text = "Enabled";
             this.withdrawEnabled.UseVisualStyleBackColor = true;
+            // 
+            // dgWithdrawIdColumn
+            // 
+            this.dgWithdrawIdColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgWithdrawIdColumn.DataPropertyName = "ItemId";
+            this.dgWithdrawIdColumn.FillWeight = 500F;
+            this.dgWithdrawIdColumn.HeaderText = "ID";
+            this.dgWithdrawIdColumn.MinimumWidth = 100;
+            this.dgWithdrawIdColumn.Name = "dgWithdrawIdColumn";
+            this.dgWithdrawIdColumn.ReadOnly = true;
+            // 
+            // dgWithdrawNameColumn
+            // 
+            this.dgWithdrawNameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgWithdrawNameColumn.DataPropertyName = "ItemName";
+            this.dgWithdrawNameColumn.FillWeight = 250F;
+            this.dgWithdrawNameColumn.HeaderText = "Name";
+            this.dgWithdrawNameColumn.MinimumWidth = 150;
+            this.dgWithdrawNameColumn.Name = "dgWithdrawNameColumn";
+            this.dgWithdrawNameColumn.ReadOnly = true;
+            this.dgWithdrawNameColumn.Width = 150;
+            // 
+            // dgDepositIdColumn
+            // 
+            this.dgDepositIdColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgDepositIdColumn.DataPropertyName = "ItemId";
+            this.dgDepositIdColumn.FillWeight = 500F;
+            this.dgDepositIdColumn.HeaderText = "ID";
+            this.dgDepositIdColumn.MinimumWidth = 100;
+            this.dgDepositIdColumn.Name = "dgDepositIdColumn";
+            this.dgDepositIdColumn.ReadOnly = true;
+            // 
+            // dgDepositNameColumn
+            // 
+            this.dgDepositNameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgDepositNameColumn.DataPropertyName = "ItemName";
+            this.dgDepositNameColumn.FillWeight = 250F;
+            this.dgDepositNameColumn.HeaderText = "Name";
+            this.dgDepositNameColumn.MinimumWidth = 150;
+            this.dgDepositNameColumn.Name = "dgDepositNameColumn";
+            this.dgDepositNameColumn.ReadOnly = true;
+            this.dgDepositNameColumn.Width = 150;
             // 
             // CompanyChestSettings
             // 
@@ -232,8 +232,6 @@ namespace CompanyChest
         #endregion
 
         private System.Windows.Forms.DataGridView dgDeposit;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ItemId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ItemName;
         private System.Windows.Forms.Label labelDeposit;
         private System.Windows.Forms.Label labelWithdraw;
         private System.Windows.Forms.Button btnDepositAdd;
@@ -241,9 +239,11 @@ namespace CompanyChest
         private System.Windows.Forms.Button btnWithdrawDelete;
         private System.Windows.Forms.Button btnWithdrawAdd;
         private System.Windows.Forms.DataGridView dgWithdraw;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.CheckBox depositEnabled;
         private System.Windows.Forms.CheckBox withdrawEnabled;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgWithdrawIdColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgWithdrawNameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgDepositIdColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgDepositNameColumn;
     }
 }

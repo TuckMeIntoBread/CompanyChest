@@ -67,6 +67,7 @@ namespace CompanyChest
             if (HoveredItemRule(out ChestRule rule))
             {
                 SavedSettings.Instance.DepositList.Add(rule);
+                SavedSettings.Instance.Save();
             }
         }
         
@@ -75,6 +76,7 @@ namespace CompanyChest
             if (HoveredItemRule(out ChestRule rule))
             {
                 SavedSettings.Instance.WithdrawList.Add(rule);
+                SavedSettings.Instance.Save();
             }
         }
 
@@ -104,6 +106,8 @@ namespace CompanyChest
             {
                 SavedSettings.Instance.WithdrawList.Add(new ChestRule(0));
             }
+            
+            SavedSettings.Instance.Save();
         }
 
         private void DeleteRule(object sender, EventArgs e)
