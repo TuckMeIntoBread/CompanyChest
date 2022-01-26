@@ -20,7 +20,7 @@ namespace CompanyChest
 {
     public class CompanyChest : BotBase
     {
-        internal static readonly LLogger Log = new LLogger("CompanyChest", Colors.Teal);
+        internal static readonly LLogger Log = new LLogger("CompanyChest", Colors.RoyalBlue);
 
         private Composite _root;
         public override string Name => "CompanyChest";
