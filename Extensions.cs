@@ -15,7 +15,7 @@ namespace CompanyChest
 
             return true;
         }
-        
+
         public static async Task<bool> MoveToInventory(this BagSlot slot, IEnumerable<BagSlot> inventory)
         {
             var invArray = inventory.ToArray();

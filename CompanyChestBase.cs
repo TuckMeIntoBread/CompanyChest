@@ -115,7 +115,7 @@ namespace CompanyChest
                 }
             }
         }
-        
+
         private static async Task WithdrawItems()
         {
             foreach (ChestRule rule in SavedSettings.Instance.WithdrawList.Distinct())

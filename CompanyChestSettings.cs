@@ -15,7 +15,7 @@ namespace CompanyChest
         {
             InitializeComponent();
         }
-        
+
         private static void SetDoubleBuffer(Control dataGridView, bool doublebuffered)
         {
             typeof(Control).InvokeMember("DoubleBuffered",
@@ -24,7 +24,7 @@ namespace CompanyChest
                 dataGridView,
                 new object[] { doublebuffered });
         }
-        
+
         private static IEnumerable<DataGridViewRow> GetSelectedRows(DataGridView dgView)
         {
             var distinctRowSet = new HashSet<int>();
@@ -38,7 +38,7 @@ namespace CompanyChest
                 yield return dgView.Rows[rowId];
             }
         }
-        
+
         private void CompanyChestSettings_Load(object sender, EventArgs e)
         {
             dgDeposit.AutoGenerateColumns = false;
@@ -48,7 +48,7 @@ namespace CompanyChest
 
             _bsDeposit = new BindingSource(SavedSettings.Instance, "DepositList");
             dgDeposit.DataSource = _bsDeposit;
-            
+
             _bsWithdraw = new BindingSource(SavedSettings.Instance, "WithdrawList");
             dgWithdraw.DataSource = _bsWithdraw;
 
@@ -104,7 +104,7 @@ namespace CompanyChest
             {
                 SavedSettings.Instance.WithdrawList.Add(new ChestRule(0));
             }
-            
+
             SavedSettings.Instance.Save();
         }
 
@@ -127,7 +127,7 @@ namespace CompanyChest
 
             int itemCount = toDeleteList.Count;
             if (itemCount == 0) return;
-            
+
             DialogResult warningBox = MessageBox.Show(
                 $"Are you sure you want to delete {itemCount} item(s)?",
                 "Really Delete?",
@@ -139,7 +139,7 @@ namespace CompanyChest
             {
                 ruleList.Remove(rule);
             }
-            
+
             SavedSettings.Instance.Save();
         }
     }

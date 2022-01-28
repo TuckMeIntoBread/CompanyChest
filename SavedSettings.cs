@@ -41,7 +41,7 @@ namespace CompanyChest
                 Save();
             }
         }
-        
+
         public BindingList<ChestRule> DepositList
         {
             get => _depositList ?? (_depositList = new BindingList<ChestRule>());
@@ -69,7 +69,7 @@ namespace CompanyChest
                 Save();
             }
         }
-        
+
         [Setting]
         [DisplayName("Should Deposit")]
         [Description("If true, will deposit items in the deposit list.")]
@@ -85,7 +85,7 @@ namespace CompanyChest
                 Save();
             }
         }
-        
+
         [Setting]
         [DisplayName("Should Withdraw")]
         [Description("If true, will withdraw items in the withdraw list.")]
