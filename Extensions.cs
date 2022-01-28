@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Buddy.Coroutines;
 using ff14bot.Managers;
 
 namespace CompanyChest
@@ -14,7 +16,7 @@ namespace CompanyChest
             return true;
         }
         
-        public static bool MoveToInventory(this BagSlot slot, IEnumerable<BagSlot> inventory)
+        public static async Task<bool> MoveToInventory(this BagSlot slot, IEnumerable<BagSlot> inventory)
         {
             var invArray = inventory.ToArray();
             if (invArray.Contains(slot)) return true;
@@ -25,12 +27,14 @@ namespace CompanyChest
                 do
                 {
                     slot.Move(destSlot);
+                    await Coroutine.Sleep(SavedSettings.Instance.MoveDelay);
                 } while (slot.IsValid && slot.IsFilled && slot.ValidForChest() && slot.GetSameItemSlot(invArray, out destSlot));
 
                 return !slot.IsValid || !slot.IsFilled;
             }
 
             slot.Move(destSlot);
+            await Coroutine.Sleep(SavedSettings.Instance.MoveDelay);
             return true;
         }
 

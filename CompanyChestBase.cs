@@ -68,17 +68,17 @@ namespace CompanyChest
         {
             if (_isDone) return false;
 
-            if (_settings.ShouldDeposit || _settings.ShouldWithdraw)
+            if (SavedSettings.Instance.ShouldDeposit || SavedSettings.Instance.ShouldWithdraw)
             {
                 if (await Nav.GetToChest())
                 {
-                    if (_settings.ShouldDeposit)
+                    if (SavedSettings.Instance.ShouldDeposit)
                     {
                         Log.Information("Depositing Items.");
                         await DepositItems();
                     }
 
-                    if (_settings.ShouldWithdraw)
+                    if (SavedSettings.Instance.ShouldWithdraw)
                     {
                         Log.Information("Withdrawing Items.");
                         await WithdrawItems();
@@ -106,13 +106,12 @@ namespace CompanyChest
                 foreach (BagSlot playerSlot in InventoryManager.FilledSlots.Where(x => x.TrueItemId == rule.ItemId && x.ValidForChest()))
                 {
                     Log.Information($"Moving Slot#{playerSlot.Slot} {playerSlot.Name} to FC Chest.");
-                    if (!playerSlot.MoveToInventory(ChestSlots))
+                    if (!await playerSlot.MoveToInventory(ChestSlots))
                     {
                         _isDone = true;
                         TreeRoot.Stop($"Couldn't find a destination slot for {rule.ItemId}. Is the FC Chest full?");
                         return;
                     }
-                    await Coroutine.Sleep(1500);
                 }
             }
         }
@@ -124,13 +123,12 @@ namespace CompanyChest
                 foreach (BagSlot chestSlot in ChestSlots.Where(x => x.TrueItemId == rule.ItemId))
                 {
                     Log.Information($"Moving Slot#{chestSlot.Slot} {chestSlot.Name} to Player Inventory.");
-                    if (!chestSlot.MoveToInventory(PlayerSlots))
+                    if (!await chestSlot.MoveToInventory(PlayerSlots))
                     {
                         _isDone = true;
                         TreeRoot.Stop($"Couldn't find a destination slot for {rule.ItemId}. Is the player inventory full?");
                         return;
                     }
-                    await Coroutine.Sleep(1500);
                 }
             }
         }

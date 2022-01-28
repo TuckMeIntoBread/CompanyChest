@@ -47,10 +47,12 @@ namespace CompanyChest
             SetDoubleBuffer(dgWithdraw, true);
 
             _bsDeposit = new BindingSource(SavedSettings.Instance, "DepositList");
-            _bsWithdraw = new BindingSource(SavedSettings.Instance, "WithdrawList");
-
             dgDeposit.DataSource = _bsDeposit;
+            
+            _bsWithdraw = new BindingSource(SavedSettings.Instance, "WithdrawList");
             dgWithdraw.DataSource = _bsWithdraw;
+
+            propGridSettings.SelectedObject = SavedSettings.Instance;
 
             HotkeyManager.Register("CompanyChestDeposit", Keys.F1, System.Windows.Input.ModifierKeys.None, HotkeyDepositRule);
             HotkeyManager.Register("CompanyChestWithdraw", Keys.F2, System.Windows.Input.ModifierKeys.None, HotkeyWithdrawRule);
@@ -87,10 +89,6 @@ namespace CompanyChest
             rule = new ChestRule(itemId);
             return itemId > 0;
         }
-
-        internal bool ShouldDeposit => depositEnabled.Checked;
-
-        internal bool ShouldWithdraw => withdrawEnabled.Checked;
 
         private BindingSource _bsDeposit;
 

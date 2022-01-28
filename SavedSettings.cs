@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Configuration;
 using System.IO;
 using ff14bot.Helpers;
 using ff14bot.Managers;
@@ -23,6 +24,12 @@ namespace CompanyChest
 
         private BindingList<ChestRule> _depositList;
 
+        private int _moveDelay = 2000;
+
+        private bool _shouldDeposit = true;
+
+        private bool _shouldWithdraw = true;
+
         public BindingList<ChestRule> WithdrawList
         {
             get => _withdrawList ?? (_withdrawList = new BindingList<ChestRule>());
@@ -43,6 +50,54 @@ namespace CompanyChest
                 if (_depositList == value) return;
 
                 _depositList = value;
+                Save();
+            }
+        }
+
+        [Setting]
+        [DisplayName("Move Delay")]
+        [Description("Amount of time in ms to wait between depositing/withdrawing items. Lower values might run the risk of being unable to move some items.")]
+        [DefaultValue(2000)]
+        public int MoveDelay
+        {
+            get => _moveDelay;
+            set
+            {
+                if (_moveDelay == value) return;
+
+                _moveDelay = value;
+                Save();
+            }
+        }
+        
+        [Setting]
+        [DisplayName("Should Deposit")]
+        [Description("If true, will deposit items in the deposit list.")]
+        [DefaultValue(true)]
+        public bool ShouldDeposit
+        {
+            get => _shouldDeposit;
+            set
+            {
+                if (_shouldDeposit == value) return;
+
+                _shouldDeposit = value;
+                Save();
+            }
+        }
+        
+        [Setting]
+        [DisplayName("Should Withdraw")]
+        [Description("If true, will withdraw items in the withdraw list.")]
+        [DefaultValue(true)]
+        public bool ShouldWithdraw
+        {
+            get => _shouldWithdraw;
+            set
+            {
+                if (_shouldWithdraw == value) return;
+
+                _shouldWithdraw = value;
                 Save();
             }
         }
