@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Buddy.Coroutines;
 using ff14bot.Managers;
+using LlamaLibrary.Logging;
 
 namespace CompanyChest
 {
@@ -26,6 +28,14 @@ namespace CompanyChest
             {
                 do
                 {
+                    if (CompanyChest.Log.LogLevel <= LogLevel.Debug)
+                    {
+                        uint destSlotCount = destSlot.IsValid && destSlot.IsFilled ? destSlot.Count : 0;
+                        StringBuilder sb = new StringBuilder();
+                        sb.Append($"Move Slot#{slot.Slot}-{slot.EnglishName} to Slot#{destSlot.Slot}-");
+                        sb.Append(destSlotCount > 0 ? $"{destSlot.EnglishName} x{destSlotCount}" : "Empty");
+                        CompanyChest.Log.Debug(sb.ToString());
+                    }
                     slot.Move(destSlot);
                     await Coroutine.Sleep(SavedSettings.Instance.MoveDelay);
                 } while (slot.IsValid && slot.IsFilled && slot.ValidForChest() && slot.GetSameItemSlot(invArray, out destSlot));
