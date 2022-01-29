@@ -44,6 +44,15 @@ namespace CompanyChest
                 return !slot.IsValid || !slot.IsFilled;
             }
 
+            if (CompanyChest.Log.IsEnabled(LogLevel.Debug))
+            {
+                uint destSlotCount = destSlot.IsValid && destSlot.IsFilled ? destSlot.Count : 0;
+                StringBuilder sb = new StringBuilder();
+                sb.Append($"Move Slot#{slot.Slot}-{slot.EnglishName} to Slot#{destSlot.Slot}-");
+                sb.Append(destSlotCount > 0 ? $"{destSlot.EnglishName} x{destSlotCount}" : "Empty");
+                sb.Append(" : Should Be Empty!");
+                CompanyChest.Log.Debug(sb.ToString());
+            }
             slot.Move(destSlot);
             await Coroutine.Sleep(SavedSettings.Instance.MoveDelay);
             return true;
