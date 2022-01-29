@@ -30,6 +30,8 @@ namespace CompanyChest
 
         private bool _shouldWithdraw = true;
 
+        private bool _debugLog;
+
         public BindingList<ChestRule> WithdrawList
         {
             get => _withdrawList ?? (_withdrawList = new BindingList<ChestRule>());
@@ -98,6 +100,22 @@ namespace CompanyChest
                 if (_shouldWithdraw == value) return;
 
                 _shouldWithdraw = value;
+                Save();
+            }
+        }
+        
+        [Setting]
+        [DisplayName("Debug Logging")]
+        [Description("If true, will log additional debug info.")]
+        [DefaultValue(false)]
+        public bool DebugLog
+        {
+            get => _debugLog;
+            set
+            {
+                if (_debugLog == value) return;
+
+                _debugLog = value;
                 Save();
             }
         }

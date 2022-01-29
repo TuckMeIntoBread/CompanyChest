@@ -68,6 +68,8 @@ namespace CompanyChest
         {
             if (_isDone) return false;
 
+            Log.LogLevel = SavedSettings.Instance.DebugLog ? LogLevel.Debug : LogLevel.Information;
+
             if (SavedSettings.Instance.ShouldDeposit || SavedSettings.Instance.ShouldWithdraw)
             {
                 if (await Nav.GetToChest())
