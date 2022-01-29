@@ -65,11 +65,17 @@ namespace CompanyChest
                 if (invSlot.TrueItemId != slot.TrueItemId) continue;
                 if (invSlot.Count >= invSlot.Item.StackSize) continue;
                 destSlot = invSlot;
+                CompanyChest.Log.Debug($"Found occupied destination for {slot.EnglishName}! Slot#{destSlot.Slot} in Bag {destSlot.BagId}");
                 return true;
             }
 
-            if (freeSlotIndex < 0) return false;
+            if (freeSlotIndex < 0)
+            {
+                CompanyChest.Log.Debug($"Couldn't find a destination for {slot.EnglishName}. Destination inventory full?");
+                return false;
+            }
             destSlot = inventory[freeSlotIndex];
+            CompanyChest.Log.Debug($"Found unoccupied destination for {slot.EnglishName}! Slot#{destSlot.Slot} in Bag {destSlot.BagId}");
             return true;
         }
     }
