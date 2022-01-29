@@ -20,6 +20,7 @@ namespace CompanyChest
 
         public static async Task<bool> MoveToInventory(this BagSlot slot, IEnumerable<BagSlot> inventory)
         {
+            if (!slot.IsValid || !slot.IsFilled || !slot.IsValidForChest()) return false;
             var invArray = inventory.ToArray();
             if (invArray.Contains(slot)) return true;
             if (!slot.GetSameItemSlot(invArray, out BagSlot destSlot)) return false;
@@ -38,7 +39,7 @@ namespace CompanyChest
                     }
                     slot.Move(destSlot);
                     await Coroutine.Sleep(SavedSettings.Instance.MoveDelay);
-                } while (slot.IsValid && slot.IsFilled && slot.ValidForChest() && slot.GetSameItemSlot(invArray, out destSlot));
+                } while (slot.IsValid && slot.IsFilled && slot.GetSameItemSlot(invArray, out destSlot));
 
                 return !slot.IsValid || !slot.IsFilled;
             }
