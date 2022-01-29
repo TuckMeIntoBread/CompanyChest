@@ -105,7 +105,7 @@ namespace CompanyChest
         {
             foreach (ChestRule rule in SavedSettings.Instance.DepositList.Distinct())
             {
-                foreach (BagSlot playerSlot in InventoryManager.FilledSlots.Where(x => x.TrueItemId == rule.ItemId && x.ValidForChest()))
+                foreach (BagSlot playerSlot in InventoryManager.FilledSlots.Where(x => x.TrueItemId == rule.ItemId && x.IsValidForChest()))
                 {
                     Log.Information($"Moving Slot#{playerSlot.Slot} {playerSlot.Name} to FC Chest.");
                     if (!await playerSlot.MoveToInventory(ChestSlots))
