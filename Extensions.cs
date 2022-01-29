@@ -28,7 +28,7 @@ namespace CompanyChest
             {
                 do
                 {
-                    if (CompanyChest.Log.LogLevel <= LogLevel.Debug)
+                    if (CompanyChest.Log.IsEnabled(LogLevel.Debug))
                     {
                         uint destSlotCount = destSlot.IsValid && destSlot.IsFilled ? destSlot.Count : 0;
                         StringBuilder sb = new StringBuilder();
