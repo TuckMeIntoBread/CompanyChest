@@ -1,10 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Buddy.Coroutines;
 using ff14bot.Managers;
-using LlamaLibrary.Logging;
 
 namespace CompanyChest
 {
@@ -29,14 +27,7 @@ namespace CompanyChest
             {
                 do
                 {
-                    if (CompanyChest.Log.IsEnabled(LogLevel.Debug))
-                    {
-                        uint destSlotCount = destSlot.IsValid && destSlot.IsFilled ? destSlot.Count : 0;
-                        StringBuilder sb = new StringBuilder();
-                        sb.Append($"Move Slot#{slot.Slot}-{slot.EnglishName} to Slot#{destSlot.Slot}-");
-                        sb.Append(destSlotCount > 0 ? $"{destSlot.EnglishName} x{destSlotCount}" : "Empty");
-                        CompanyChest.Log.Debug(sb.ToString());
-                    }
+                    CompanyChest.Log.Debug($"Move {slot.DebugString()} to {destSlot.DebugString()}");
                     slot.Move(destSlot);
                     await Coroutine.Sleep(SavedSettings.Instance.MoveDelay);
                 } while (slot.IsValid && slot.IsFilled && slot.GetSameItemSlot(invArray, out destSlot));
@@ -44,15 +35,7 @@ namespace CompanyChest
                 return !slot.IsValid || !slot.IsFilled;
             }
 
-            if (CompanyChest.Log.IsEnabled(LogLevel.Debug))
-            {
-                uint destSlotCount = destSlot.IsValid && destSlot.IsFilled ? destSlot.Count : 0;
-                StringBuilder sb = new StringBuilder();
-                sb.Append($"Move Slot#{slot.Slot}-{slot.EnglishName} to Slot#{destSlot.Slot}-");
-                sb.Append(destSlotCount > 0 ? $"{destSlot.EnglishName} x{destSlotCount}" : "Empty");
-                sb.Append(" : Should Be Empty!");
-                CompanyChest.Log.Debug(sb.ToString());
-            }
+            CompanyChest.Log.Debug($"Destination should be empty: Move {slot.DebugString()} to {destSlot.DebugString()}");
             slot.Move(destSlot);
             await Coroutine.Sleep(SavedSettings.Instance.MoveDelay);
             return true;
@@ -86,6 +69,12 @@ namespace CompanyChest
             destSlot = inventory[freeSlotIndex];
             CompanyChest.Log.Debug($"Found unoccupied destination for {slot.EnglishName}! Slot#{destSlot.Slot} in Bag {destSlot.BagId}");
             return true;
+        }
+
+        private static string DebugString(this BagSlot slot)
+        {
+            uint slotCount = slot.IsValid && slot.IsFilled ? slot.Count : 0;
+            return $"Slot#{slot.Slot}-{slot.EnglishName}-{(slotCount > 0 ? slotCount.ToString() : "Empty")}";
         }
     }
 }
